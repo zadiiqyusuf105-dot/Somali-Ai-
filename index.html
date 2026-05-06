@@ -14,7 +14,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -24,7 +24,7 @@
             align-items: center; 
         }
 
-        /* Watermark */
+        /* Watermark Background */
         body::before {
             content: "CAAWIYEFLT 🇸🇴";
             position: absolute;
@@ -91,7 +91,9 @@
         }
 
         input { flex: 1; background: transparent; border: none; padding: 12px; color: white; outline: none; font-size: 16px; }
-        .icon-btn { color: #8b949e; cursor: pointer; padding: 10px; font-size: 1.2rem; }
+        
+        .icon-btn { color: #8b949e; cursor: pointer; padding: 10px; font-size: 1.2rem; transition: 0.2s; }
+        .icon-btn:hover { color: var(--accent-color); }
         .send-btn { color: var(--accent-color) !important; }
 
         .dots::after { content: '...'; animation: typing 1s infinite; }
@@ -106,18 +108,19 @@
 </header>
 
 <div id="chat-container">
-    <div class="message bot-msg">Iska wada dhig nio! CaawiyeFLT ayaa hadda diyaar kuu ah. Maxaan isku dhex ridaa maanta? 😂🔥</div>
+    <div class="message bot-msg">Hambalyo nio! CaawiyeFLT waa Live. Sideen maanta kugu caawiyaa? Sheeko, kaftan, iyo shaqo kasta waa i diyaar. 😂🚀</div>
 </div>
 
 <div class="input-wrapper">
     <div class="input-container">
         <input type="text" id="userInput" placeholder="Halkan wax ku qor ama ku hadal..." onkeypress="if(event.key === 'Enter') send()">
-        <i class="fas fa-microphone icon-btn" id="voiceBtn"></i>
-        <i class="fas fa-paper-plane icon-btn send-btn" onclick="send()"></i>
+        <i class="fas fa-microphone icon-btn" id="voiceBtn" title="Ku hadal"></i>
+        <i class="fas fa-paper-plane icon-btn send-btn" onclick="send()" title="Dir"></i>
     </div>
 </div>
 
 <script>
+    // API KEY-GAAGA GEMINI
     const API_KEY = 'AIzaSyDLnTbBi8kY3iS9pbuIkEPNysDjetZDSwg'; 
 
     async function send() {
@@ -126,10 +129,12 @@
         const text = input.value.trim();
         if (!text) return;
 
+        // User message
         container.innerHTML += `<div class="message user-msg">${text}</div>`;
         input.value = "";
         container.scrollTop = container.scrollHeight;
 
+        // Loading message
         const loadingMsg = document.createElement('div');
         loadingMsg.className = 'message bot-msg';
         loadingMsg.innerHTML = 'Fikiraya <span class="dots"></span>';
@@ -141,26 +146,40 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, AI Soomaali ah oo aad u furfuran, sheeko yaqaan ah, oo kugu jawaabaya hab kaftan iyo saaxiibtinimo leh. Ha u hadlin sidii robot qallafsan, ee u hadal sidii saaxiib. Su'aashu waa: " + text }] }]
+                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, oo ah AI caawiye ah oo Soomaali ah. Shaqsiyaddaadu waa mid aad u furfuran, saaxiibtinimo leh, oo jecel kaftanka iyo sheekada mada daalada ah. Ha u hadlin sidii robot, u hadal sidii saaxiib raba inuu qofka caawiyo oo ka qosliyo haddii loo baahdo. Su'aashu waa: " + text }] }]
                 })
             });
+
             const data = await response.json();
-            loadingMsg.innerText = data.candidates[0].content.parts[0].text;
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                loadingMsg.innerText = data.candidates[0].content.parts[0].text;
+            } else {
+                loadingMsg.innerText = "Nio, waxaa jira dhib xagga API-ga ah. Hubi quota-gaaga Google AI Studio.";
+            }
+
         } catch (e) {
-            loadingMsg.innerText = "Nio, API-ga ayaa yara 'busy' ah. Mar kale iisoo tuur!";
+            loadingMsg.innerText = "Nio, internet-ka ama code-ka ayaa yara dhib leh. Mar kale iisoo tuur!";
         }
         container.scrollTop = container.scrollHeight;
     }
 
+    // Voice Input Logic
     const voiceBtn = document.getElementById('voiceBtn');
     const recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
     if (recognition) {
         const sr = new recognition();
-        sr.lang = 'so-SO';
+        sr.lang = 'so-SO'; 
         voiceBtn.onclick = () => { sr.start(); voiceBtn.style.color = "red"; };
-        sr.onresult = (e) => { document.getElementById('userInput').value = e.results[0][0].transcript; voiceBtn.style.color = "#8b949e"; };
+        sr.onresult = (e) => {
+            document.getElementById('userInput').value = e.results[0][0].transcript;
+            voiceBtn.style.color = "#8b949e";
+        };
         sr.onspeechend = () => { sr.stop(); voiceBtn.style.color = "#8b949e"; };
     }
 </script>
+
 </body>
 </html>
+
