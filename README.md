@@ -173,7 +173,7 @@
 
 <script>
     // ⚠️ HALKAAN GALI API KEY-GAAGA
-    const API_KEY = 'YOUR_GROQ_API_KEY_HERE'; 
+    const API_KEY = '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'; 
 
     async function send() {
         const input = document.getElementById('userInput');
