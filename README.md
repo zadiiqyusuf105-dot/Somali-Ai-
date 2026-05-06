@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somali AI - Gemini Style</title>
+    <title>CaawiyeFLT - Somali AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -21,165 +21,112 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            position: relative;
-            overflow: hidden;
+            align-items: center; 
         }
 
-        /* Background Watermark & Flag */
+        /* Watermark Background */
         body::before {
-            content: "SOMALI AI 🇸🇴";
+            content: "CAAWIYEFLT 🇸🇴";
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-15deg);
-            font-size: 8rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            color: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.02);
             z-index: -1;
-            white-space: nowrap;
             pointer-events: none;
         }
 
         header {
-            padding: 15px 25px;
+            width: 100%;
+            max-width: 800px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(14, 17, 23, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(14, 17, 23, 0.9);
             border-bottom: 1px solid #30363d;
+            box-sizing: border-box;
         }
-
-        header h1 {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            margin: 0;
-        }
-
-        .flag { font-size: 1.5rem; }
 
         #chat-container {
+            width: 100%;
+            max-width: 800px;
             flex: 1;
             overflow-y: auto;
             padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            scrollbar-width: thin;
+            gap: 15px;
+            box-sizing: border-box;
         }
 
         .message {
             max-width: 85%;
-            padding: 15px;
-            border-radius: 18px;
+            padding: 12px 18px;
+            border-radius: 20px;
             font-size: 16px;
-            line-height: 1.6;
-            animation: fadeIn 0.3s ease;
+            line-height: 1.5;
+            word-wrap: break-word;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .user-msg { align-self: flex-end; background: #1d4ed8; color: white; border-bottom-right-radius: 5px; }
+        .bot-msg { align-self: flex-start; background: var(--chat-bg); border: 1px solid #30363d; border-bottom-left-radius: 5px; }
 
-        .user-msg {
-            align-self: flex-end;
-            background: #1d4ed8;
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .bot-msg {
-            align-self: flex-start;
-            background: var(--chat-bg);
-            color: var(--text-color);
-            border-bottom-left-radius: 4px;
-            border: 1px solid #30363d;
-        }
-
-        /* Input Area Style like Gemini */
         .input-wrapper {
+            width: 100%;
+            max-width: 800px;
             padding: 20px;
-            background: transparent;
+            box-sizing: border-box;
         }
 
         .input-container {
-            max-width: 800px;
-            margin: 0 auto;
             background: #21262d;
             border-radius: 30px;
             display: flex;
             align-items: center;
             padding: 5px 15px;
             border: 1px solid #30363d;
-            transition: border-color 0.3s;
         }
 
-        .input-container:focus-within {
-            border-color: var(--accent-color);
-        }
-
-        input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 12px;
-            color: white;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .action-btns {
-            display: flex;
-            gap: 10px;
-            color: #8b949e;
-        }
-
-        .action-btns i {
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 10px;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
-
-        .action-btns i:hover {
-            color: var(--accent-color);
-            background: #30363d;
-        }
-
+        input { flex: 1; background: transparent; border: none; padding: 12px; color: white; outline: none; font-size: 16px; }
+        
+        .icon-btn { color: #8b949e; cursor: pointer; padding: 10px; font-size: 1.2rem; transition: 0.2s; }
+        .icon-btn:hover { color: var(--accent-color); }
         .send-btn { color: var(--accent-color) !important; }
+
+        .dots::after { content: '...'; animation: typing 1s infinite; }
+        @keyframes typing { 0% { content: '.'; } 33% { content: '..'; } 66% { content: '...'; } }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>FriendFLT <small style="color: #8b949e; font-size: 0.7rem;">Somali AI</small></h1>
-    <div class="flag">🇸🇴</div>
+    <h1 style="font-size: 1.2rem; color: var(--accent-color); margin:0;">CaawiyeFLT <small style="color:#8b949e; font-size:0.7rem;">Somali AI</small></h1>
+    <span>🇸🇴</span>
 </header>
 
 <div id="chat-container">
-    <div class="message bot-msg">
-        Iska wada dhig! Waxaan ahay FriendFLT AI. Sideen maanta kuu caawin karaa? 🇸🇴
-    </div>
+    <div class="message bot-msg">Hambalyo nio! CaawiyeFLT waa Live. Sideen maanta kugu caawiyaa? Sheeko, kaftan, iyo shaqo kasta waa i diyaar. 😂🚀</div>
 </div>
 
 <div class="input-wrapper">
     <div class="input-container">
         <input type="text" id="userInput" placeholder="Halkan wax ku qor ama ku hadal..." onkeypress="if(event.key === 'Enter') send()">
-        <div class="action-btns">
-            <i class="fas fa-microphone" id="voiceBtn" title="Ku hadal"></i>
-            <i class="fas fa-paper-plane send-btn" onclick="send()" title="Dir"></i>
-        </div>
+        <i class="fas fa-microphone icon-btn" id="voiceBtn" title="Ku hadal"></i>
+        <i class="fas fa-paper-plane icon-btn send-btn" onclick="send()" title="Dir"></i>
     </div>
 </div>
 
 <script>
-    // ⚠️ HALKAAN GALI API KEY-GAAGA
-    const API_KEY = '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'; 
+    // API KEY-GAAGA GEMINI
+    const API_KEY = 'AIzaSyDLnTbBi8kY3iS9pbuIkEPNysDjetZDSwg'; 
 
     async function send() {
         const input = document.getElementById('userInput');
         const container = document.getElementById('chat-container');
         const text = input.value.trim();
-
         if (!text) return;
 
         // User message
@@ -187,61 +134,53 @@
         input.value = "";
         container.scrollTop = container.scrollHeight;
 
-        // Loading
+        // Loading message
         const loadingMsg = document.createElement('div');
         loadingMsg.className = 'message bot-msg';
-        loadingMsg.innerHTML = '<i class="fas fa-ellipsis-h fa-pulse"></i>';
+        loadingMsg.innerHTML = 'Fikiraya <span class="dots"></span>';
         container.appendChild(loadingMsg);
+        container.scrollTop = container.scrollHeight;
 
         try {
-            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                 method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${API_KEY}`,
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    model: "llama3-8b-8192",
-                    messages: [
-                        { role: "system", content: "Waxaad tahay FriendFLT, AI khabiir ku ah coding-ka iyo research-ka, kuna hadla Af-Soomali." },
-                        { role: "user", content: text }
-                    ]
+                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, oo ah AI caawiye ah oo Soomaali ah. Shaqsiyaddaadu waa mid aad u furfuran, saaxiibtinimo leh, oo jecel kaftanka iyo sheekada mada daalada ah. Ha u hadlin sidii robot, u hadal sidii saaxiib raba inuu qofka caawiyo oo ka qosliyo haddii loo baahdo. Su'aashu waa: " + text }] }]
                 })
             });
 
             const data = await response.json();
-            loadingMsg.innerText = data.choices[0].message.content;
+            
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                loadingMsg.innerText = data.candidates[0].content.parts[0].text;
+            } else {
+                loadingMsg.innerText = "Nio, waxaa jira dhib xagga API-ga ah. Hubi quota-gaaga Google AI Studio.";
+            }
+
         } catch (e) {
-            loadingMsg.innerText = "Khalad ayaa dhacay, fadlan hubi internet-kaaga iyo API Key-ga.";
+            loadingMsg.innerText = "Nio, internet-ka ama code-ka ayaa yara dhib leh. Mar kale iisoo tuur!";
         }
         container.scrollTop = container.scrollHeight;
     }
 
-    // Voice Recognition Logic
+    // Voice Input Logic
     const voiceBtn = document.getElementById('voiceBtn');
     const recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (recognition) {
         const sr = new recognition();
-        sr.lang = 'so-SO'; // Isku day Somali, hadii kale 'en-US'
-
-        voiceBtn.onclick = () => {
-            sr.start();
-            voiceBtn.style.color = "red";
-        };
-
+        sr.lang = 'so-SO'; 
+        voiceBtn.onclick = () => { sr.start(); voiceBtn.style.color = "red"; };
         sr.onresult = (e) => {
-            const transcript = e.results[0][0].transcript;
-            document.getElementById('userInput').value = transcript;
+            document.getElementById('userInput').value = e.results[0][0].transcript;
             voiceBtn.style.color = "#8b949e";
         };
-
         sr.onspeechend = () => { sr.stop(); voiceBtn.style.color = "#8b949e"; };
-    } else {
-        voiceBtn.style.display = "none"; // Haddii uusan browser-ku taageerin codka
     }
 </script>
 
 </body>
 </html>
+
 
