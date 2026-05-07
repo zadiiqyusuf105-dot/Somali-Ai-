@@ -3,57 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CaawiyeFLT</title>
+    <title>CaawiyeFLT - Private</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --bg: #0d1117; --chat: #161b22; --blue: #1d4ed8; --accent: #38bdf8; --text: #e6edf3; }
-        * { box-sizing: border-box; }
         body { font-family: sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; justify-content: flex-end; }
         
-        /* Chatbox-ka meel hoose ayaan ka soo bilaabay */
-        #chat-box { 
-            width: 100%; 
-            max-width: 500px; 
-            margin: 0 auto;
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px;
-            justify-content: flex-end; /* Fariimaha hoos ayay ka bilaabanayaan */
-        }
+        /* Sanduuqa Key-ga lagu qariyo */
+        #key-section { background: #21262d; padding: 10px; border-bottom: 1px solid #30363d; display: flex; gap: 5px; }
+        #api-key-input { flex: 1; background: #0d1117; border: 1px solid #444; color: #38bdf8; padding: 5px; border-radius: 5px; font-size: 12px; }
 
+        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; justify-content: flex-end; }
         .msg { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 16px; }
         .u { align-self: flex-end; background: var(--blue); border-bottom-right-radius: 4px; }
         .b { align-self: flex-start; background: var(--chat); border: 1px solid #333; border-bottom-left-radius: 4px; }
 
-        .input-area { 
-            width: 100%; 
-            max-width: 500px; 
-            margin: 0 auto;
-            padding: 15px; 
-            background: var(--bg);
-            padding-bottom: 30px; /* Si ay fartaadu u gaarto */
-        }
-
-        .input-cont { 
-            background: #21262d; 
-            border-radius: 30px; 
-            display: flex; 
-            padding: 5px 15px; 
-            align-items: center;
-            border: 1px solid #444;
-        }
-
+        .input-area { padding: 15px; background: var(--bg); padding-bottom: 30px; }
+        .input-cont { background: #21262d; border-radius: 30px; display: flex; padding: 5px 15px; align-items: center; border: 1px solid #444; }
         input { flex: 1; background: none; border: none; color: white; padding: 12px; outline: none; font-size: 16px; }
-        .btn { color: var(--accent); cursor: pointer; padding: 10px; font-size: 1.3rem; }
+        .btn { color: var(--accent); cursor: pointer; padding: 10px; }
     </style>
 </head>
 <body>
 
+<div id="key-section">
+    <input type="password" id="api-key-input" placeholder="Geli Gemini API Key halkan..." />
+    <button onclick="saveKey()" style="background:var(--blue); color:white; border:none; border-radius:5px; padding:5px 10px; font-size:12px;">Save</button>
+</div>
+
 <div id="chat-box">
-    <div class="msg b">Iska wada dhig nio! Hadda chatbox-ku wuxuu joogaa meel gacantaada u dhow. Maxaan isku dhex ridaa? 😂🔥</div>
+    <div class="msg b">Nio, markaad Key-ga kore geliso oo aad 'Save' dhahdo, waan bilaabaynaa sheekada! 🔥</div>
 </div>
 
 <div class="input-area">
@@ -64,12 +43,22 @@
 </div>
 
 <script>
-    const KEY = 'AIzaSyCiWMVnCr9gS28ptlzMUygJea-QeFVy1Mg'; 
+    // Markuu website-ka furmo, soo rabo Key-gii hore u kaydsanaa
+    document.getElementById('api-key-input').value = localStorage.getItem('my_gemini_key') || "";
+
+    function saveKey() {
+        const key = document.getElementById('api-key-input').value;
+        localStorage.setItem('my_gemini_key', key);
+        alert("Key-ga waa la kaydiyey nio! Hadda isku day inaad ila hadasho.");
+    }
 
     async function send() {
         const input = document.getElementById('userInput');
         const box = document.getElementById('chat-box');
+        const key = localStorage.getItem('my_gemini_key');
         const val = input.value.trim();
+
+        if(!key) { alert("Nio, horta Key-ga kore geli!"); return; }
         if(!val) return;
 
         box.innerHTML += `<div class="msg u">${val}</div>`;
@@ -82,26 +71,26 @@
         box.appendChild(load);
 
         try {
-            // Isticmaal Gemini 1.5 Flash (waa ka degdeg badan yahay)
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, saaxiib Soomaali ah oo kaftan badan. Waligaa ha dhihi 'AI baan ahay'. U hadal sidii saaxiib dhab ah oo adduunka la socda. Jawaabtu ha ahaato mid kooban. Su'aashu waa: " + val }] }]
+                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, saaxiib Soomaali ah. Su'aashu waa: " + val }] }]
                 })
             });
             const data = await res.json();
             if(data.candidates) {
                 load.innerText = data.candidates[0].content.parts[0].text;
             } else {
-                load.innerText = "Nio, Google baa weli 'Quota' leh. Sug 5 daqiiqo nio, ha xanaaqin.";
+                load.innerText = "Cilad: Hubi in Key-gu sax yahay ama uusan Warning lahayn.";
             }
         } catch (e) {
-            load.innerText = "Cilad farsamo nio.";
+            load.innerText = "Nio, xiriirka ayaa xun.";
         }
         box.scrollTop = box.scrollHeight;
     }
 </script>
 </body>
 </html>
+
 
