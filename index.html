@@ -2,40 +2,35 @@
 <html lang="so">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CaawiyeFLT - Virtual Friend</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CaawiyeFLT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --bg: #0d1117; --chat: #161b22; --blue: #1d4ed8; --accent: #38bdf8; --text: #e6edf3; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        header { width: 100%; padding: 15px 20px; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; background: rgba(13, 17, 23, 0.95); }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-        .msg { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.4; word-wrap: break-word; }
-        .u { align-self: flex-end; background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; height: 100vh; height: -webkit-fill-available; }
+        header { padding: 15px; border-bottom: 1px solid #30363d; background: var(--bg); text-align: center; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; background: var(--bg); }
+        .msg { max-width: 85%; padding: 10px 15px; border-radius: 18px; font-size: 15px; word-wrap: break-word; }
+        .u { align-self: flex-end; background: var(--blue); border-bottom-right-radius: 4px; }
         .b { align-self: flex-start; background: var(--chat); border: 1px solid #30363d; border-bottom-left-radius: 4px; }
-        .in-area { padding: 15px; background: var(--bg); border-top: 1px solid #30363d; }
-        .in-cont { background: #21262d; border-radius: 25px; display: flex; padding: 5px 12px; align-items: center; border: 1px solid #30363d; }
+        .input-area { padding: 10px; background: var(--bg); border-top: 1px solid #30363d; padding-bottom: 25px; }
+        .input-cont { background: #21262d; border-radius: 25px; display: flex; padding: 5px 15px; align-items: center; }
         input { flex: 1; background: none; border: none; color: white; padding: 10px; outline: none; font-size: 16px; }
-        .btn { color: var(--accent); cursor: pointer; padding: 8px; font-size: 1.2rem; }
+        .btn { color: var(--accent); cursor: pointer; padding: 5px; }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:10px; height:10px; background:#23d160; border-radius:50%;"></div>
-        <h1 style="font-size: 1rem; margin:0;">CaawiyeFLT 🇸🇴</h1>
-    </div>
-    <i class="fas fa-ellipsis-v" style="color:#8b949e;"></i>
-</header>
+<header><b style="color:var(--accent)">CaawiyeFLT 🇸🇴</b></header>
 
 <div id="chat-box">
-    <div class="msg b">Iska wada dhig nio! CaawiyeFLT ayaa Live ah. Wax kasta oo dunida ka cusub (Ciyaaraha, News, Games) i weydii. Sideen kuu caawiyaa saaxiib? 😂🔥</div>
+    <div class="msg b">Iska wada dhig nio! Hadda ayaan si sax ah u soo noqday. Maxaan isku dhex ridaa? 😂🔥</div>
 </div>
 
-<div class="in-area">
-    <div class="in-cont">
-        <input type="text" id="userInput" placeholder="Maxaa cusub nio..." onkeypress="if(event.key==='Enter') send()">
+<div class="input-area">
+    <div class="input-cont">
+        <input type="text" id="userInput" placeholder="Wax i weydii..." onkeypress="if(event.key==='Enter') send()">
         <i class="fas fa-paper-plane btn" onclick="send()"></i>
     </div>
 </div>
@@ -59,25 +54,25 @@
         box.appendChild(load);
 
         try {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
+            // Waxaan u beddelay v1 oo ka degan v1beta
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${KEY}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, oo ah saaxiib dhab ah oo Soomaali ah. Waxaad la socotaa wax kasta oo adduunka ka jira (News, Sports, Gaming, Technology). Waligaa ha dhihi 'Waxaan ahay AI'. U hadal sidii qof caadi ah oo sxp la ah qofka la hadlayaya, isticmaal kaftan, luqad fudud, iyo niyad wanaag. Haddii lagu weydiiyo wararkii ugu dambeeyey, ka jawaab adoo isticmaalaya aqoontaada ballaaran. Su'aashu waa: " + val }] }]
+                    contents: [{ parts: [{ text: "Waxaad tahay CaawiyeFLT, saaxiib Soomaali ah oo kaftan badan. Waligaa ha dhihi 'AI baan ahay'. U hadal sidii saaxiib dhab ah oo adduunka la socda. Su'aashu waa: " + val }] }]
                 })
             });
             const data = await res.json();
-            if(data.candidates && data.candidates[0].content) {
+            if(data.candidates) {
                 load.innerText = data.candidates[0].content.parts[0].text;
             } else {
-                load.innerText = "Nio, API-ga ayaa yara dhib leh. Hubi Quota-ga.";
+                load.innerText = "Nio, Google baa weli diidan Key-ga. Sug 5 daqiiqo ama mid kale soo saar.";
             }
         } catch (e) {
-            load.innerText = "Nio, internet-ka ayaa naga maqan malaha.";
+            load.innerText = "Cilad xagga internet-ka ah.";
         }
         box.scrollTop = box.scrollHeight;
     }
 </script>
 </body>
 </html>
-                 
