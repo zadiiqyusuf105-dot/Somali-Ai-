@@ -49,27 +49,51 @@
         if (!input.value) return;
         if (!apiKey) { alert("Fadlan geli API Key!"); return; }
 
-        chatBox.innerHTML += `<p><b>Adiga:</b> ${input.value}</p>`;
-        const userMsg = input.value;
-        input.value = "";
+                // 2. Dirista fariinta (Koodhka cusub ee Server-kaaga)
+        chatBox.innerHTML += '<p id="loading"><i>SOMALI AI wuu fikirayaa...</i></p>';
 
-        // Loading state
-        chatBox.innerHTML += `<p id="loading"><i>SOMALI AI wuu fikirayaa...</i></p>`;
-        
         try {
-            // Halkan ayaad ku beddeli kartaa URL-ka API-ga aad rabto
-            const response = await fetch(`https://api.example.com/${provider}`, {
+            const response = await fetch('https://somali-ai-backend.onrender.com/api/gemini', {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt: userMsg })
             });
+
             const data = await response.json();
             document.getElementById('loading').remove();
-            chatBox.innerHTML += `<p><b>${provider.toUpperCase()}:</b> ${data.answer}</p>`;
+
+            if (data && data.candidates) {
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                chatBox.innerHTML += '<p><b>Gemini:</b> ' + aiResponse + '</p>';
+            } else {
+                chatBox.innerHTML += '<p><b>Khalad:</b> Server-ku jawaab ma soo celin.</p>';
+            }
         } catch (e) {
-            document.getElementById('loading').innerHTML = "<b>Khalad:</b> Hubi API Key-gaaga ama Internet-ka!";
+            document.getElementById('loading').innerHTML = '<b>Khalad:</b> Hubi Internet-ka ama Server-ka!';
         }
-        chatBox.scrollTop = chatBox.scrollHeight;
+        // 2. Dirista fariinta (Koodhka cusub ee Server-kaaga)
+        chatBox.innerHTML += '<p id="loading"><i>SOMALI AI wuu fikirayaa...</i></p>';
+
+        try {
+            const response = await fetch('https://somali-ai-backend.onrender.com/api/gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: userMsg })
+            });
+
+            const data = await response.json();
+            document.getElementById('loading').remove();
+
+            if (data && data.candidates) {
+                const aiResponse = data.candidates[0].content.parts[0].text;
+                chatBox.innerHTML += '<p><b>Gemini:</b> ' + aiResponse + '</p>';
+            } else {
+                chatBox.innerHTML += '<p><b>Khalad:</b> Server-ku jawaab ma soo celin.</p>';
+            }
+        } catch (e) {
+            document.getElementById('loading').innerHTML = '<b>Khalad:</b> Hubi Internet-ka ama Server-ka!';
+        }
+
     }
 
     // 3. Microphone (Speech to Text)
